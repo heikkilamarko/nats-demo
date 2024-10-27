@@ -1,0 +1,14 @@
+node_modules
+build
+LICENSE
+README.md
+Dockerfile*
+npm-debug.log
+.git
+.gitignore
+.gitattributes
+.dockerignore
+.vscode
+.idea
+.DS_Store
+.env.development

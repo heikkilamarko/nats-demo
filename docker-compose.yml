@@ -1,0 +1,37 @@
+services:
+  ui:
+    build: ./ui
+    image: ui
+    env_file:
+      - ./env/dev/ui.env
+    ports:
+      - "8080:8080"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - nats-demo
+
+  nats:
+    build: ./nats
+    image: nats
+    env_file:
+      - ./env/dev/nats.env
+    ports:
+      - "1883:1883"
+      - "4222:4222"
+      - "8222:8222"
+      - "9222:9222"
+    volumes:
+      - nats:/nats
+    networks:
+      - nats-demo
+
+networks:
+  nats-demo:
+    name: nats-demo
+
+volumes:
+  nats:
+  caddy_data:
+  caddy_config:

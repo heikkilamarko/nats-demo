@@ -1,0 +1,34 @@
+{
+	admin off
+	auto_https off
+	skip_install_trust
+
+	log {
+		level INFO
+		format json {
+			time_format "rfc3339_nano"
+		}
+	}
+}
+
+:8080 {
+	log
+
+	header -Server
+
+	redir /nats /nats/
+
+	handle_path /ws {
+		reverse_proxy http://nats:9222
+	}
+
+	handle_path /nats/* {
+		reverse_proxy http://nats:8222
+	}
+
+	handle {
+		root * /usr/share/ui
+		try_files {path} /app.html
+		file_server
+	}
+}
