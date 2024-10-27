@@ -15,11 +15,24 @@ docker compose up --build -d
 
 ## NATS CLI
 
+### Create NATS Context
+
+```bash
+# Create context
+nats context save --user admin --password S3c_r3t local
+
+# Select context
+nats context select local
+
+# List contexts
+nats context ls
+```
+
 ### Publish Messages
 
 ```bash
 # Publish 100 messages at 5-second intervals
-nats pub demo.messages "hello {{.Count}}" --count 100 --sleep 5s
+nats pub demo.messages "hello {{.TimeStamp}}" --count 100 --sleep 5s > /dev/null &
 ```
 
 ### Query Connected Users

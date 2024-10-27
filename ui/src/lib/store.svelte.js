@@ -1,6 +1,7 @@
 import { wsconnect, Events } from '@nats-io/nats-core';
 import { Kvm } from '@nats-io/kv';
 import { v4 as uuidv4 } from 'uuid';
+import { getWsUrl } from './utils.js';
 
 const DEFAULT_TITLE = 'NATS Demo';
 const DEFAULT_THEME = 'dark';
@@ -33,7 +34,7 @@ class AppStore {
 			this.status = STATUS_CONNECTING;
 
 			this.#nc = await wsconnect({
-				servers: 'ws://localhost:8080/ws',
+				servers: getWsUrl('/ws'),
 				name: 'ui',
 				user: 'ui',
 				pass: this.token,

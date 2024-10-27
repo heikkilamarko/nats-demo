@@ -19,11 +19,11 @@
 	redir /nats /nats/
 
 	handle_path /ws {
-		reverse_proxy http://nats:9222
+		reverse_proxy {$NATS_WS_ADDRESS}
 	}
 
 	handle_path /nats/* {
-		reverse_proxy http://nats:8222
+		reverse_proxy {$NATS_HTTP_ADDRESS}
 	}
 
 	handle {
