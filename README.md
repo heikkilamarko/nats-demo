@@ -18,13 +18,16 @@ docker compose up --build -d
 ### Create NATS Context
 
 ```bash
-# Create context
-nats context save --user admin --password S3c_r3t local
+# Create a context for the demo account
+nats context save --user admin --password S3c_r3t demo
 
-# Select context
-nats context select local
+# Create a context for the sys account
+nats context save --user sysadmin --password S3c_r3t sys
 
-# List contexts
+# Select the demo context
+nats context select demo
+
+# List all contexts
 nats context ls
 ```
 
