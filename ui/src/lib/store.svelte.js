@@ -137,7 +137,7 @@ class AppStore {
 			data: this.#parseMessage(msg)
 		};
 
-		this.messages = [message, ...this.messages];
+		this.messages = [message, ...this.messages].slice(0, 100);
 	}
 
 	#parseMessage(msg) {
