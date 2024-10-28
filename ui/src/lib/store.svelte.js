@@ -1,7 +1,7 @@
 import { wsconnect, Events } from '@nats-io/nats-core';
 import { Kvm } from '@nats-io/kv';
 import { v4 as uuidv4 } from 'uuid';
-import { getWsUrl } from './utils.js';
+import { getWsUrl, getSessionToken, setSessionToken } from './utils.js';
 
 const DEFAULT_TITLE = 'NATS Demo';
 const DEFAULT_THEME = 'dark';
@@ -15,25 +15,25 @@ const STATUS_LAME_DUCK_MODE = 'server is transitioning to lame duck mode';
 const STATUS_SERVER_ERROR = 'server error';
 
 class AppStore {
-	token = $state();
+	token = $state(getSessionToken());
 	user = $state();
 	title = $state(DEFAULT_TITLE);
 	status = $state(STATUS_DISCONNECTED);
 	messages = $state.raw([]);
 
-	isConnected = $derived(this.status == STATUS_CONNECTED);
+	isConnected = $derived(this.status === STATUS_CONNECTED);
 
 	#nc;
 
 	async connect() {
+		if (this.status === STATUS_CONNECTING || this.status === STATUS_DISCONNECTING) return;
+
 		try {
-			if (this.#nc) {
-				this.status = STATUS_DISCONNECTING;
-				await this.#nc.drain();
-				this.#nc = null;
-			}
+			await this.disconnect();
 
 			this.status = STATUS_CONNECTING;
+
+			setSessionToken(this.token);
 
 			this.#nc = await wsconnect({
 				servers: getWsUrl('/ws'),
@@ -56,12 +56,21 @@ class AppStore {
 		}
 	}
 
+	async disconnect() {
+		this.status = STATUS_DISCONNECTING;
+		try {
+			await this.#nc?.drain();
+		} catch {}
+		this.#nc = null;
+		this.status = STATUS_DISCONNECTED;
+	}
+
 	async #monitor() {
 		(async () => {
 			for await (const s of this.#nc.status()) {
 				this.status = this.#parseMonitorStatus(s);
 			}
-		})();
+		})().catch((err) => (this.status = err.message));
 
 		this.#nc.closed().then((err) => {
 			if (err) this.status = err.message;
@@ -84,9 +93,7 @@ class AppStore {
 			for await (const msg of watch) {
 				this.#handleConfigure(msg);
 			}
-		})().catch((err) => {
-			this.status = err.message;
-		});
+		})().catch((err) => (this.status = err.message));
 	}
 
 	#listenPing() {
@@ -96,9 +103,7 @@ class AppStore {
 			for await (const msg of sub) {
 				this.#handlePing(msg);
 			}
-		})().catch((err) => {
-			this.status = err.message;
-		});
+		})().catch((err) => (this.status = err.message));
 	}
 
 	#listenMessages() {
@@ -108,9 +113,7 @@ class AppStore {
 			for await (const msg of sub) {
 				this.#handleMessage(msg);
 			}
-		})().catch((err) => {
-			this.status = err.message;
-		});
+		})().catch((err) => (this.status = err.message));
 	}
 
 	#handleConfigure(msg) {
@@ -171,5 +174,7 @@ class AppStore {
 }
 
 const store = new AppStore();
+
+if (store.token) store.connect();
 
 export { store };

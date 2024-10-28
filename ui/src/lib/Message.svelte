@@ -1,11 +1,10 @@
 <script>
 	import { fly } from 'svelte/transition';
+	import { formatMessage } from './utils.js';
 
 	let { message } = $props();
+
+	let formattedMessage = $derived(formatMessage(message.data));
 </script>
 
-<pre class="p-2 border rounded" transition:fly={{ x: 200, duration: 800 }}>{JSON.stringify(
-		message.data,
-		null,
-		2
-	)}</pre>
+<pre class="p-2 border rounded" transition:fly={{ x: 200, duration: 800 }}>{formattedMessage}</pre>
