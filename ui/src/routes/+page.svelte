@@ -14,6 +14,7 @@
 			<form class="input-group">
 				<input
 					type="password"
+					name="token"
 					class="form-control"
 					placeholder="type auth token"
 					bind:value={store.token}
@@ -32,6 +33,7 @@
 				<span class="input-group-text">@</span>
 				<input
 					type="text"
+					name="user"
 					class="form-control"
 					placeholder="type your name"
 					bind:value={store.user}

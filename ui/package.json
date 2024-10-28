@@ -21,6 +21,6 @@
 	"dependencies": {
 		"@nats-io/kv": "3.0.0-12",
 		"@nats-io/nats-core": "3.0.0-30",
-		"uuid": "11.0.0"
+		"uuid": "11.0.1"
 	}
 }
