@@ -21,6 +21,8 @@ class AppStore {
 	status = $state(STATUS_DISCONNECTED);
 	messages = $state.raw([]);
 
+	isConnected = $derived(this.status == STATUS_CONNECTED);
+
 	#nc;
 
 	async connect() {
@@ -45,8 +47,8 @@ class AppStore {
 
 			this.#monitor();
 			this.#configure();
-			this.#listen_ping();
-			this.#listen_messages();
+			this.#listenPing();
+			this.#listenMessages();
 
 			this.status = STATUS_CONNECTED;
 		} catch (err) {
@@ -57,7 +59,7 @@ class AppStore {
 	async #monitor() {
 		(async () => {
 			for await (const s of this.#nc.status()) {
-				this.status = this.#parse_monitor_status(s);
+				this.status = this.#parseMonitorStatus(s);
 			}
 		})();
 
@@ -70,72 +72,72 @@ class AppStore {
 		const kvm = new Kvm(this.#nc);
 		const kv = await kvm.create('demo_kv');
 
-		const kv_title = await kv.get('title');
-		this.#set_title(kv_title?.string());
+		const kvTitle = await kv.get('title');
+		this.#setTitle(kvTitle?.string());
 
-		const kv_theme = await kv.get('theme');
-		this.#set_theme(kv_theme?.string());
+		const kvTheme = await kv.get('theme');
+		this.#setTheme(kvTheme?.string());
 
 		const watch = await kv.watch();
 
 		(async () => {
 			for await (const msg of watch) {
-				this.#handle_configure(msg);
+				this.#handleConfigure(msg);
 			}
 		})().catch((err) => {
 			this.status = err.message;
 		});
 	}
 
-	#listen_ping() {
+	#listenPing() {
 		const sub = this.#nc.subscribe('demo.ping');
 
 		(async () => {
 			for await (const msg of sub) {
-				this.#handle_ping(msg);
+				this.#handlePing(msg);
 			}
 		})().catch((err) => {
 			this.status = err.message;
 		});
 	}
 
-	#listen_messages() {
+	#listenMessages() {
 		const sub = this.#nc.subscribe('demo.messages');
 
 		(async () => {
 			for await (const msg of sub) {
-				this.#handle_message(msg);
+				this.#handleMessage(msg);
 			}
 		})().catch((err) => {
 			this.status = err.message;
 		});
 	}
 
-	#handle_configure(msg) {
+	#handleConfigure(msg) {
 		switch (msg.key) {
 			case 'title':
-				this.#set_title(msg.string());
+				this.#setTitle(msg.string());
 				break;
 			case 'theme':
-				this.#set_theme(msg.string());
+				this.#setTheme(msg.string());
 				break;
 		}
 	}
 
-	#handle_ping(msg) {
+	#handlePing(msg) {
 		if (this.user) msg.respond(this.user);
 	}
 
-	#handle_message(msg) {
+	#handleMessage(msg) {
 		const message = {
 			id: uuidv4(),
-			data: this.#parse_message(msg)
+			data: this.#parseMessage(msg)
 		};
 
 		this.messages = [message, ...this.messages];
 	}
 
-	#parse_message(msg) {
+	#parseMessage(msg) {
 		try {
 			return msg.json();
 		} catch {}
@@ -143,7 +145,7 @@ class AppStore {
 		return msg.string();
 	}
 
-	#parse_monitor_status(s) {
+	#parseMonitorStatus(s) {
 		switch (s.type) {
 			case Events.Disconnect:
 				return STATUS_DISCONNECTED;
@@ -158,11 +160,11 @@ class AppStore {
 		}
 	}
 
-	#set_title(title) {
+	#setTitle(title) {
 		this.title = title || DEFAULT_TITLE;
 	}
 
-	#set_theme(theme) {
+	#setTheme(theme) {
 		if (!theme || !THEMES.includes(theme)) theme = DEFAULT_THEME;
 		document.documentElement.setAttribute('data-bs-theme', theme);
 	}
