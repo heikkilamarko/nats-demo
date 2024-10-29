@@ -3,7 +3,7 @@
 	import Message from './Message.svelte';
 </script>
 
-<h3 class="mb-3">Messages</h3>
+<h2 class="h3 mb-3">Messages</h2>
 
 {#each store.messages as message (message.id)}
 	<Message {message} />

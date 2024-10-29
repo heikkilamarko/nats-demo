@@ -1,4 +1,5 @@
 <script>
+	import '../app.scss';
 	import { store } from '$lib/store.svelte.js';
 	import ConnectionStatus from '$lib/ConnectionStatus.svelte';
 	import MessageList from '$lib/MessageList.svelte';

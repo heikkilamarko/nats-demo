@@ -13,5 +13,13 @@ export default defineConfig({
 				target: 'http://localhost:8080'
 			}
 		}
+	},
+	css: {
+		preprocessorOptions: {
+			scss: {
+				quietDeps: true,
+				silenceDeprecations: ['import', 'legacy-js-api']
+			}
+		}
 	}
 });
