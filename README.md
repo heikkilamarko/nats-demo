@@ -12,6 +12,7 @@ docker compose up --build -d
 | --------------- | --------------------------- |
 | Demo UI         | http://localhost:8080       |
 | NATS Monitoring | http://localhost:8080/nats/ |
+| Grafana         | http://localhost:3000       |
 
 ## NATS CLI
 
