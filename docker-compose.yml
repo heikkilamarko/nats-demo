@@ -11,6 +11,8 @@ services:
       - caddy_config:/config
     networks:
       - nats-demo
+    depends_on:
+      - nats
 
   nats:
     build: ./nats
@@ -27,6 +29,38 @@ services:
     networks:
       - nats-demo
 
+  prometheus-nats-exporter:
+    image: natsio/prometheus-nats-exporter
+    command: -varz -jsz=all http://nats:8222
+    networks:
+      - nats-demo
+    depends_on:
+      - nats
+
+  prometheus:
+    build: ./monitoring/prometheus
+    image: prometheus
+    volumes:
+      - prometheus:/prometheus
+    networks:
+      - nats-demo
+    depends_on:
+      - prometheus-nats-exporter
+
+  grafana:
+    build: ./monitoring/grafana
+    image: grafana
+    env_file:
+      - ./env/dev/grafana.env
+    volumes:
+      - grafana:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - nats-demo
+    depends_on:
+      - prometheus
+
 networks:
   nats-demo:
     name: nats-demo
@@ -35,3 +69,5 @@ volumes:
   nats:
   caddy_data:
   caddy_config:
+  prometheus:
+  grafana:
