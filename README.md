@@ -80,4 +80,10 @@ nats kv ls demo_kv --verbose --display-value
 
 ## MQTT
 
-To send messages to the `demo/messages` topic, use [MQTT Explorer](https://mqtt-explorer.com/) or any other MQTT client.
+### Publish Messages
+
+To publish messages to the `demo/messages` topic, use [MQTT Explorer](https://mqtt-explorer.com/) or any other MQTT client.
+
+### Subscribe to Messages
+
+To subscribe to messages on the `demo/messages` topic, use [MQTT Explorer](https://mqtt-explorer.com/) or any other MQTT client, such as the Node.js demo client in the `mqtt/demo-client` directory in this repository.
