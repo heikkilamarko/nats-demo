@@ -24,16 +24,15 @@
   - Containers
   - Mobile
   - Devices
-  - ...
+- Scales from single-node NATS to multi-cloud superclusters and leaf nodes
 - High performance
 - Secure
-- Scales from single-node NATS to multi-cloud superclusters and leaf nodes
 - Multi-tenant (accounts)
 
 ## Features
 
 - Subject-based addressing
-- Payload-agnotic
+- Payload-agnostic
 - Core NATS
   - Publish-Subscribe
   - Request-Reply
@@ -169,11 +168,7 @@ nats stream ls
 ```
 
 ```bash
-nats pub messages.en "hello world {{.Count}}" --count 1000
-```
-
-```bash
-nats pub messages.fi "hei maailma {{.Count}}" --count 1000
+nats pub messages.demo "demo message {{.Count}}" --count 1000
 ```
 
 ```bash
@@ -187,19 +182,19 @@ watch nats stream ls
 ### Consumers
 
 ```bash
-nats consumer add messages messages_con
+nats consumer add messages messages
 ```
 
 ```bash
-nats consumer add jobs jobs_con
+nats consumer add jobs jobs
 ```
 
 ```bash
-nats consumer next messages messages_con  --count 10
+nats consumer next messages messages --count 10
 ```
 
 ```bash
-nats consumer next jobs jobs_con --count 10
+nats consumer next jobs jobs --count 10
 ```
 
 ## Key-Value Store
@@ -207,15 +202,15 @@ nats consumer next jobs jobs_con --count 10
 https://docs.nats.io/nats-concepts/jetstream/key-value-store
 
 ```bash
-nats kv add demo_bucket
+nats kv add demo
 ```
 
 ```bash
-nats kv put demo_bucket log_level "INFO"
+nats kv put demo log_level "INFO"
 ```
 
 ```bash
-nats kv put demo_bucket theme "dark"
+nats kv put demo theme "dark"
 ```
 
 ```bash
@@ -223,19 +218,19 @@ nats kv ls
 ```
 
 ```bash
-nats kv ls demo_bucket --verbose --display-value
+nats kv ls demo --verbose --display-value
 ```
 
 ```bash
-nats kv watch demo_bucket
+nats kv watch demo
 ```
 
 ```bash
-nats kv put demo_bucket log_level "WARN"
+nats kv put demo log_level "WARN"
 ```
 
 ```bash
-nats kv rm demo_bucket theme
+nats kv rm demo theme
 ```
 
 ## Object Store
@@ -243,7 +238,7 @@ nats kv rm demo_bucket theme
 https://docs.nats.io/nats-concepts/jetstream/obj_store
 
 ```bash
-nats object add demo_bucket
+nats object add demo
 ```
 
 ```bash
@@ -251,7 +246,7 @@ echo "Lorem ipsum dolor sit amet" > lorem_ipsum.txt
 ```
 
 ```bash
-nats object put demo_bucket lorem_ipsum.txt
+nats object put demo lorem_ipsum.txt
 ```
 
 ```bash
@@ -259,9 +254,9 @@ nats object ls
 ```
 
 ```bash
-nats object ls demo_bucket
+nats object ls demo
 ```
 
 ```bash
-nats object get demo_bucket lorem_ipsum.txt
+nats object get demo lorem_ipsum.txt
 ```
