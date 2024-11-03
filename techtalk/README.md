@@ -33,6 +33,7 @@
 
 - Subject-based addressing
 - Payload-agnostic
+- Message headers
 - Core NATS
   - Publish-Subscribe
   - Request-Reply
@@ -187,6 +188,10 @@ nats consumer add messages messages
 
 ```bash
 nats consumer add jobs jobs
+```
+
+```bash
+nats consumer report
 ```
 
 ```bash
