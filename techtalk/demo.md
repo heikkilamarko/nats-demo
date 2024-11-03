@@ -17,9 +17,6 @@
 - Simple
   - All features in a ~15MB single binary executable
   - No runtime dependencies
-- High performance
-- Secure
-- Multi-tenant (accounts)
 - Runs everywhere
   - On-prem
   - Edge
@@ -28,6 +25,10 @@
   - Mobile
   - Devices
   - ...
+- High performance
+- Secure
+- Scales from single-node NATS to multi-cloud superclusters and leaf nodes
+- Multi-tenant (accounts)
 
 ## Features
 
@@ -49,7 +50,7 @@
 - Multi-Tenant (Accounts)
 - Security
   - TLS
-  - Token
+  - Token authentication
   - Username / Password (plain text or bcrypted passwords)
   - NKeys (highly secure public-key signature system based on Ed25519)
   - Decentralized JWT authentication/authorization
@@ -70,6 +71,8 @@
 The best way to begin learning NATS is by using the NATS CLI.
 
 ## NATS Server
+
+![NATS Server](nats_server.png)
 
 ```bash
 nats-server -c demo.conf
@@ -110,14 +113,6 @@ nats sub "demo.>"
 ```
 
 ```bash
-nats pub demo.en.messages "hello world"
-```
-
-```bash
-nats pub demo.fi.messages "hei maailma"
-```
-
-```bash
 nats sub ">"
 ```
 
@@ -153,15 +148,21 @@ https://docs.nats.io/nats-concepts/jetstream
 
 ```bash
 nats stream add messages
-# Subjects:         "messages.>"
-# Retention Policy: "Limits"
 ```
+
+| Configuration    | Value        |
+| ---------------- | ------------ |
+| Subjects         | `messages.>` |
+| Retention Policy | `Limits`     |
 
 ```bash
 nats stream add jobs
-# Subjects:         "jobs.>"
-# Retention Policy: "Work Queue"
 ```
+
+| Configuration    | Value        |
+| ---------------- | ------------ |
+| Subjects         | `jobs.>`     |
+| Retention Policy | `Work Queue` |
 
 ```bash
 nats stream ls
@@ -180,18 +181,6 @@ nats pub jobs.demo "demo job {{.Count}}" --count 100
 ```
 
 ```bash
-nats stream ls
-```
-
-```bash
-nats stream view messages
-```
-
-```bash
-nats stream -h
-```
-
-```bash
 watch nats stream ls
 ```
 
@@ -203,14 +192,6 @@ nats consumer add messages messages_con
 
 ```bash
 nats consumer add jobs jobs_con
-```
-
-```bash
-nats consumer report messages
-```
-
-```bash
-nats consumer report jobs
 ```
 
 ```bash
@@ -226,15 +207,7 @@ nats consumer next jobs jobs_con --count 10
 https://docs.nats.io/nats-concepts/jetstream/key-value-store
 
 ```bash
-nats kv -h
-```
-
-```bash
 nats kv add demo_bucket
-```
-
-```bash
-nats kv ls
 ```
 
 ```bash
@@ -246,15 +219,11 @@ nats kv put demo_bucket theme "dark"
 ```
 
 ```bash
+nats kv ls
+```
+
+```bash
 nats kv ls demo_bucket --verbose --display-value
-```
-
-```bash
-nats kv get demo_bucket log_level
-```
-
-```bash
-nats kv rm demo_bucket theme
 ```
 
 ```bash
@@ -262,7 +231,11 @@ nats kv watch demo_bucket
 ```
 
 ```bash
-nats kv put demo_bucket theme "light"
+nats kv put demo_bucket log_level "WARN"
+```
+
+```bash
+nats kv rm demo_bucket theme
 ```
 
 ## Object Store
@@ -270,15 +243,7 @@ nats kv put demo_bucket theme "light"
 https://docs.nats.io/nats-concepts/jetstream/obj_store
 
 ```bash
-nats object -h
-```
-
-```bash
 nats object add demo_bucket
-```
-
-```bash
-nats object ls
 ```
 
 ```bash
@@ -290,9 +255,13 @@ nats object put demo_bucket lorem_ipsum.txt
 ```
 
 ```bash
+nats object ls
+```
+
+```bash
 nats object ls demo_bucket
 ```
 
 ```bash
-nats object get demo_bucket lorem_ipsum.txt --output lorem_ipsum.get.txt
+nats object get demo_bucket lorem_ipsum.txt
 ```
