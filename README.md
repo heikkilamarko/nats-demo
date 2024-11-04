@@ -43,10 +43,10 @@ nats pub demo.messages "hello {{.TimeStamp}}" --count 100 --sleep 5s
 
 ```bash
 # For all users
-nats req demo.ping "" --replies 0
+nats request demo.ping "" --replies 0
 
 # For one user
-nats req demo.ping "" --replies 1
+nats request demo.ping "" --replies 1
 ```
 
 ### UI Configuration

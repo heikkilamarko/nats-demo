@@ -128,7 +128,7 @@ class AppStore {
 	}
 
 	#handlePing(msg) {
-		if (this.user) msg.respond(this.user);
+		msg.respond(this.user?.trim() || '<unknown>');
 	}
 
 	#handleMessage(msg) {

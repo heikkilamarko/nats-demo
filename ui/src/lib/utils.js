@@ -12,9 +12,9 @@ export function formatMessage(message) {
 }
 
 export function setSessionToken(token) {
-	sessionStorage.setItem('token', token);
+	localStorage.setItem('token', token);
 }
 
 export function getSessionToken() {
-	return sessionStorage.getItem('token');
+	return localStorage.getItem('token');
 }
