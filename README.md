@@ -36,7 +36,7 @@ nats context ls
 
 ```bash
 # Publish 100 messages at 5-second intervals
-nats pub demo.messages "hello {{.TimeStamp}}" --count 100 --sleep 5s > /dev/null &
+nats pub demo.messages "hello {{.TimeStamp}}" --count 100 --sleep 5s
 ```
 
 ### Query Connected Users
@@ -47,9 +47,6 @@ nats req demo.ping "" --replies 0
 
 # For one user
 nats req demo.ping "" --replies 1
-
-# For three users
-nats req demo.ping "" --replies 3
 ```
 
 ### UI Configuration

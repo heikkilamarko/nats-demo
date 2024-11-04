@@ -33,9 +33,9 @@ docker push <container_registry_name>.azurecr.io/nats:v1
 To build the NATS Box container image, use the following commands:
 
 ```bash
-docker pull --platform linux/amd64 natsio/nats-box
+cd nats-box
 
-docker tag natsio/nats-box <container_registry_name>.azurecr.io/nats-box:v1
+docker build --platform linux/amd64 -t <container_registry_name>.azurecr.io/nats-box:v1 .
 
 docker push <container_registry_name>.azurecr.io/nats-box:v1
 ```
