@@ -30,7 +30,7 @@ docker push <container_registry_name>.azurecr.io/nats:v1
 
 ## Build NATS Box Container Image
 
-To build the NATS Box container image, use the following commands:
+To build the NATS Box container image, navigate to the `nats-box` directory and execute the following commands:
 
 ```bash
 cd nats-box
