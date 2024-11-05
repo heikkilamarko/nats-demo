@@ -129,15 +129,27 @@ nats pub demo.messages "hello world"
 ### Request-Reply
 
 ```bash
-nats reply demo.greeter "hello world"
+nats reply demo.service "instance 1: pong"
 ```
 
 ```bash
-nats reply demo.greeter "hei maailma"
+nats reply demo.service "instance 2: pong"
 ```
 
 ```bash
-nats request demo.greeter "hi"
+nats request demo.service "ping"
+```
+
+```bash
+nats reply "demo.weather.*" --command "curl -s wttr.in/{{2}}?0q"
+```
+
+```bash
+nats request demo.weather.helsinki "" --raw
+```
+
+```bash
+nats request demo.weather.london "" --raw
 ```
 
 ## JetStream
