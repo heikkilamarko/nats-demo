@@ -72,7 +72,7 @@ The best way to begin learning NATS is by using the NATS CLI.
 
 ## NATS Server
 
-![NATS Server](nats_server.png)
+![NATS Server](nats_server.svg)
 
 ```bash
 nats-server -c demo.conf
