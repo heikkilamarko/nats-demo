@@ -55,24 +55,24 @@ nats request demo.ping "" --replies 1
 
 ```bash
 # Set theme to light mode
-nats kv put demo_kv theme "light"
+nats kv put demo theme "light"
 
 # Set theme to dark mode
-nats kv put demo_kv theme "dark"
+nats kv put demo theme "dark"
 ```
 
 #### Change Title
 
 ```bash
 # Set a new UI title
-nats kv put demo_kv title "New Title"
+nats kv put demo title "New Title"
 ```
 
 #### Display KV Entries
 
 ```bash
-# Show all key-value entries in the demo_kv store with values
-nats kv ls demo_kv --verbose --display-value
+# Show all key-value entries in the demo bucket with values
+nats kv ls demo --verbose --display-value
 ```
 
 ## MQTT
@@ -83,4 +83,4 @@ To publish messages to the `demo/messages` topic, use [MQTT Explorer](https://mq
 
 ### Subscribe to Messages
 
-To subscribe to messages on the `demo/messages` topic, use [MQTT Explorer](https://mqtt-explorer.com/) or any other MQTT client, such as the Node.js demo client in the `mqtt/demo-client` directory in this repository.
+To subscribe to messages on the `demo/messages` topic, use [MQTT Explorer](https://mqtt-explorer.com/) or any other MQTT client.

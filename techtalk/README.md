@@ -24,7 +24,7 @@
   - Containers
   - Mobile
   - Devices
-- Scales from single-node NATS to multi-cloud superclusters and leaf nodes
+- Scales from single NATS server to multi-cloud superclusters (cluster of clusters) and leaf nodes
 - High performance
 - Secure
 - Multi-tenant (accounts)
@@ -45,7 +45,7 @@
   - Object Store
 - Supported protocols
   - TCP (Standard NATS)
-  - MQTT 3.1.1
+  - MQTT 3.1.1 with Sparkplug B compatibility
   - WebSocket
 - Multi-Tenant (Accounts)
 - Security
@@ -58,9 +58,9 @@
     - Roles: Operator, Account, User
   - Auth Callout (use any IAM solution: OAuth, LDAP, SAML, Microsoft Entra, Keycloak, ZITADEL...)
 - Server topologies
-  - Single-node NATS Server
+  - Single NATS server
   - Clustering
-  - Super Clusters with Gateway connections
+  - Superclusters (cluster of clusters) with gateway connections
   - Leaf Nodes (useful in IoT and edge scenarios)
 - Monitoring
   - NATS Server provides a lightweight HTTP server on a dedicated monitoring port

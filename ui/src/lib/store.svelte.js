@@ -79,7 +79,7 @@ class AppStore {
 
 	async #configure() {
 		const kvm = new Kvm(this.#nc);
-		const kv = await kvm.create('demo_kv');
+		const kv = await kvm.create('demo');
 
 		const kvTitle = await kv.get('title');
 		this.#setTitle(kvTitle?.string());
