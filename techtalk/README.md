@@ -1,37 +1,41 @@
 # NATS
 
-- Messaging system / Connective technology
+- Messaging System / Connective Technology
 - Designed for increasingly hyper-connected world
+- Can replace many commonly used technologies with a single solution, including:
+  - Traditional messaging: RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, etc.
+  - Data streaming: Kafka, Azure Event Hubs, etc.
+  - IIoT & IoT: MQTT 3.1.1 with Sparkplug B compatibility
+  - WebSocket servers: Centrifugo, Azure Web PubSub, Azure SignalR Service, etc.
+  - Key-Value stores: Redis, etc.
+  - Object stores: MinIO, S3, Azure Blob Storage, Google Cloud Storage, etc.
 - Open source, Apache License 2.0
 - Cloud Native Computing Foundation (CNCF) incubating project
+- Known for its robustness
 - Widely adopted
   - Used globally by thousands of companies
-  - Use cases: microservices, stream processing, edge computing, web, mobile, IoT...
+  - Use cases: microservices, stream processing, edge computing, web, mobile, IoT, etc.
   - 200M+ downloads
   - 1000+ contributors
-  - SDKs available for all major programming languages (Go, Rust, C, .NET, Java, JavaScript, Python...)
+  - SDKs available for all major programming languages (Go, Rust, C, .NET, Java, JavaScript, Python, etc.)
 - Developed by Synadia
-  - Synadia has a NATS-as-a-Service offering
+  - Synadia offers a NATS-as-a-Service solution
     - Synadia Cloud: A global, multi-cloud NATS platform with an admin portal and API, fully managed by Synadia.
     - Synadia Platform: NATS packaged with enterprise-grade features, available as a fully managed service by Synadia or for self-hosting.
 - Simple
   - All features in a ~15MB single binary executable
   - No runtime dependencies
-- Runs everywhere
-  - On-prem
-  - Edge
-  - Cloud
-  - Containers
-  - Mobile
-  - Devices
-- Scales from single NATS server to multi-cloud superclusters (cluster of clusters) and leaf nodes
+- Runs everywhere (on-prem, edge, cloud, containers, mobile, devices, etc.)
+- Scales from a single NATS server to multi-cloud superclusters (cluster of clusters) and leaf nodes
 - High performance
 - Secure
-- Multi-tenant (accounts)
+- Multi-tenant
 
 ## Features
 
 - Subject-based addressing
+- Location-transparent
+- Geo-aware
 - Payload-agnostic
 - Message headers
 - Core NATS
@@ -51,12 +55,12 @@
 - Security
   - TLS
   - Token authentication
-  - Username / Password (plain text or bcrypted passwords)
+  - Username/Password (plain text or bcrypt-hashed passwords)
   - NKeys (highly secure public-key signature system based on Ed25519)
   - Decentralized JWT authentication/authorization
-    - Zero trust security
+    - Zero-trust security
     - Roles: Operator, Account, User
-  - Auth Callout (use any IAM solution: OAuth, LDAP, SAML, Microsoft Entra, Keycloak, ZITADEL...)
+  - Auth Callout (use any IAM solution, e.g., OAuth, LDAP, SAML, Microsoft Entra, Keycloak, ZITADEL, etc.)
 - Server topologies
   - Single NATS server
   - Clustering
