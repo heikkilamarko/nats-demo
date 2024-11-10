@@ -5,7 +5,7 @@
 - Can replace many commonly used technologies with a single solution, including:
   - Traditional messaging: RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, etc.
   - Data streaming: Kafka, Azure Event Hubs, etc.
-  - IIoT & IoT: MQTT 3.1.1 with Sparkplug B compatibility
+  - MQTT 3.1.1 brokers (with Sparkplug B compatibility): HiveMQ MQTT Broker, etc.
   - WebSocket servers: Centrifugo, Azure Web PubSub, Azure SignalR Service, etc.
   - Key-Value stores: Redis, etc.
   - Object stores: MinIO, S3, Azure Blob Storage, Google Cloud Storage, etc.
