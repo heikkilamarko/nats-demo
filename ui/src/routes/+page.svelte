@@ -10,6 +10,10 @@
 		store.connect();
 	}
 
+	function handleValidateMessage(event) {
+		event.target.setCustomValidity?.(store.isConnected ? '' : 'You must connect first.');
+	}
+
 	function handlePublishMessage(event) {
 		event.preventDefault();
 		store.publishMessage();
@@ -20,7 +24,7 @@
 	<h1>{store.title}</h1>
 
 	<ConnectionStatus />
-	<ErrorMessage />
+	<ErrorMessage message={store.error} />
 
 	<div class="row g-3 my-3">
 		<div class="col-12 col-md-6">
@@ -29,13 +33,13 @@
 					type="password"
 					name="token"
 					class="form-control"
-					placeholder="type auth token"
+					placeholder="Type your auth token"
 					autocomplete="off"
+					required
+					maxlength="50"
 					bind:value={store.token}
 				/>
-				<button class="btn btn-outline-secondary" type="submit" disabled={!store.canConnect}
-					>Connect</button
-				>
+				<button class="btn btn-outline-secondary" type="submit">Connect</button>
 			</form>
 		</div>
 
@@ -45,25 +49,31 @@
 				<input
 					type="text"
 					name="user"
+					form="message-form"
 					class="form-control"
-					placeholder="type your name"
+					placeholder="Type your username"
 					autocomplete="off"
+					required
+					minlength="3"
+					maxlength="50"
 					bind:value={store.user}
 				/>
 			</div>
 		</div>
 
 		<div class="col-12">
-			<form class="input-group" onsubmit={handlePublishMessage}>
+			<form id="message-form" class="input-group" onsubmit={handlePublishMessage}>
 				<input
 					type="text"
 					name="message"
 					class="form-control"
-					placeholder="type message"
+					placeholder="Type a message"
 					autocomplete="off"
+					required
+					maxlength="1000"
 					bind:value={store.message}
 				/>
-				<button class="btn btn-outline-secondary" type="submit" disabled={!store.canPublishMessage}
+				<button class="btn btn-outline-secondary" type="submit" onclick={handleValidateMessage}
 					>Send</button
 				>
 			</form>
