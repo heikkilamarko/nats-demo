@@ -5,5 +5,5 @@
 <span
 	class="badge txt text-bg-success"
 	class:text-bg-light={!store.isConnected}
-	class:text-bg-success={store.isConnected}>{store.status}</span
+	class:text-bg-success={store.isConnected}>{store.connectionStatus}</span
 >

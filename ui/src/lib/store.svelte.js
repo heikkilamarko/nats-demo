@@ -17,23 +17,29 @@ class AppStore {
 	token = $state(getSessionToken());
 	user = $state();
 	title = $state(DEFAULT_TITLE);
-	status = $state(STATUS_DISCONNECTED);
+	connectionStatus = $state(STATUS_DISCONNECTED);
+	error = $state();
 	messages = $state.raw([]);
 	message = $state();
+	isPublishing = $state(false);
 
-	isConnected = $derived(this.status === STATUS_CONNECTED);
-	canConnect = $derived(!!store.token);
-	canPublishMessage = $derived(this.isConnected && !!this.user && !!this.message);
+	isConnected = $derived(this.connectionStatus === STATUS_CONNECTED);
+	canConnect = $derived(!!store.token?.trim());
+	canPublishMessage = $derived(this.isConnected && !!this.user?.trim() && !!this.message?.trim());
 
 	#nc;
 
 	async connect() {
-		if (this.status === STATUS_CONNECTING || this.status === STATUS_DISCONNECTING) return;
+		if (
+			this.connectionStatus === STATUS_CONNECTING ||
+			this.connectionStatus === STATUS_DISCONNECTING
+		)
+			return;
 
 		try {
 			await this.disconnect();
 
-			this.status = STATUS_CONNECTING;
+			this.connectionStatus = STATUS_CONNECTING;
 
 			setSessionToken(this.token);
 
@@ -52,48 +58,55 @@ class AppStore {
 			this.#listenPing();
 			this.#listenMessages();
 
-			this.status = STATUS_CONNECTED;
+			this.connectionStatus = STATUS_CONNECTED;
 		} catch (err) {
-			this.status = err.message;
+			this.connectionStatus = STATUS_DISCONNECTED;
+			this.error = err.message;
 		}
 	}
 
 	async disconnect() {
-		this.status = STATUS_DISCONNECTING;
+		this.error = null;
+		this.connectionStatus = STATUS_DISCONNECTING;
 		try {
 			await this.#nc?.drain();
 		} catch {}
 		this.#nc = null;
-		this.status = STATUS_DISCONNECTED;
+		this.connectionStatus = STATUS_DISCONNECTED;
 	}
 
 	async publishMessage() {
 		if (!this.canPublishMessage) return;
 
 		try {
+			this.isPublishing = true;
+			this.error = null;
+
 			await this.#nc.publish(
 				'demo.messages',
 				JSON.stringify({
-					id: createMessageId(),
-					user: this.user,
-					text: this.message
+					user: this.user?.trim(),
+					text: this.message?.trim()
 				})
 			);
+
 			this.message = null;
 		} catch (err) {
-			this.status = err.message;
+			this.error = err.message;
+		} finally {
+			this.isPublishing = false;
 		}
 	}
 
 	async #monitor() {
 		(async () => {
 			for await (const s of this.#nc.status()) {
-				this.status = this.#parseMonitorStatus(s);
+				this.#handleMonitorStatus(s);
 			}
-		})().catch((err) => (this.status = err.message));
+		})().catch((err) => (this.error = err.message));
 
 		this.#nc.closed().then((err) => {
-			if (err) this.status = err.message;
+			if (err) this.error = err.message;
 		});
 	}
 
@@ -113,7 +126,7 @@ class AppStore {
 			for await (const msg of watch) {
 				this.#handleConfigure(msg);
 			}
-		})().catch((err) => (this.status = err.message));
+		})().catch((err) => (this.error = err.message));
 	}
 
 	#listenPing() {
@@ -123,7 +136,7 @@ class AppStore {
 			for await (const msg of sub) {
 				this.#handlePing(msg);
 			}
-		})().catch((err) => (this.status = err.message));
+		})().catch((err) => (this.error = err.message));
 	}
 
 	#listenMessages() {
@@ -133,7 +146,7 @@ class AppStore {
 			for await (const msg of sub) {
 				this.#handleMessage(msg);
 			}
-		})().catch((err) => (this.status = err.message));
+		})().catch((err) => (this.error = err.message));
 	}
 
 	#handleConfigure(msg) {
@@ -159,25 +172,30 @@ class AppStore {
 	}
 
 	#parseMessage(msg) {
+		let message;
+
 		try {
-			return msg.json();
+			message = msg.json();
 		} catch {}
 
-		return null;
+		message ??= {};
+		message.id = createMessageId();
+		message.user ||= '<unknown>';
+		message.text ||= msg.string() || '<empty>';
+
+		return message;
 	}
 
-	#parseMonitorStatus(s) {
+	#handleMonitorStatus(s) {
 		switch (s.type) {
 			case Events.Disconnect:
-				return STATUS_DISCONNECTED;
+				this.connectionStatus = STATUS_DISCONNECTED;
 			case Events.Reconnect:
-				return STATUS_CONNECTED;
+				this.connectionStatus = STATUS_CONNECTED;
 			case Events.LDM:
-				return STATUS_LAME_DUCK_MODE;
+				this.connectionStatus = STATUS_LAME_DUCK_MODE;
 			case Events.Error:
-				return STATUS_SERVER_ERROR;
-			default:
-				return this.status;
+				this.error = s.error?.name || STATUS_SERVER_ERROR;
 		}
 	}
 

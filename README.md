@@ -32,13 +32,6 @@ nats context select demo
 nats context ls
 ```
 
-### Publish Messages
-
-```bash
-# Publish 100 messages at 5-second intervals
-nats pub demo.messages "hello {{.TimeStamp}}" --count 100 --sleep 5s
-```
-
 ### Query Connected Users
 
 ```bash
@@ -80,6 +73,15 @@ nats kv ls demo --verbose --display-value
 ### Publish Messages
 
 To publish messages to the `demo/messages` topic, use [MQTT Explorer](https://mqtt-explorer.com/) or any other MQTT client.
+
+Example JSON message:
+
+```json
+{
+  "user": "MQTT Client",
+  "text": "demo message"
+}
+```
 
 ### Subscribe to Messages
 
