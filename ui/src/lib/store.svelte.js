@@ -1,7 +1,6 @@
 import { wsconnect, Events } from '@nats-io/nats-core';
 import { Kvm } from '@nats-io/kv';
-import { v4 as uuidv4 } from 'uuid';
-import { getWsUrl, getSessionToken, setSessionToken } from './utils.js';
+import { createMessageId, getWsUrl, getSessionToken, setSessionToken } from './utils.js';
 
 const DEFAULT_TITLE = 'NATS Demo';
 const DEFAULT_THEME = 'dark';
@@ -20,8 +19,11 @@ class AppStore {
 	title = $state(DEFAULT_TITLE);
 	status = $state(STATUS_DISCONNECTED);
 	messages = $state.raw([]);
+	message = $state();
 
 	isConnected = $derived(this.status === STATUS_CONNECTED);
+	canConnect = $derived(!!store.token);
+	canPublishMessage = $derived(this.isConnected && !!this.user && !!this.message);
 
 	#nc;
 
@@ -63,6 +65,24 @@ class AppStore {
 		} catch {}
 		this.#nc = null;
 		this.status = STATUS_DISCONNECTED;
+	}
+
+	async publishMessage() {
+		if (!this.canPublishMessage) return;
+
+		try {
+			await this.#nc.publish(
+				'demo.messages',
+				JSON.stringify({
+					id: createMessageId(),
+					user: this.user,
+					text: this.message
+				})
+			);
+			this.message = null;
+		} catch (err) {
+			this.status = err.message;
+		}
 	}
 
 	async #monitor() {
@@ -132,10 +152,8 @@ class AppStore {
 	}
 
 	#handleMessage(msg) {
-		const message = {
-			id: uuidv4(),
-			data: this.#parseMessage(msg)
-		};
+		const message = this.#parseMessage(msg);
+		if (!message) return;
 
 		this.messages = [message, ...this.messages].slice(0, 100);
 	}
@@ -145,7 +163,7 @@ class AppStore {
 			return msg.json();
 		} catch {}
 
-		return msg.string();
+		return null;
 	}
 
 	#parseMonitorStatus(s) {

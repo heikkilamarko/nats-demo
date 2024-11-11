@@ -1,14 +1,9 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export function getWsUrl(url) {
 	return url?.startsWith('ws')
 		? url
 		: `${location.origin.replace(/^http/, 'ws')}/${url.replace(/^\//, '')}`;
-}
-
-export function formatMessage(message) {
-	try {
-		return JSON.stringify(message, null, 2);
-	} catch {}
-	return message;
 }
 
 export function setSessionToken(token) {
@@ -17,4 +12,8 @@ export function setSessionToken(token) {
 
 export function getSessionToken() {
 	return localStorage.getItem('token');
+}
+
+export function createMessageId() {
+	return uuidv4();
 }

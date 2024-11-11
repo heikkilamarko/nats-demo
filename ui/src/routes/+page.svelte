@@ -4,11 +4,14 @@
 	import ConnectionStatus from '$lib/ConnectionStatus.svelte';
 	import MessageList from '$lib/MessageList.svelte';
 
-	let canConnect = $derived(!!store.token);
-
-	function handleSubmit(event) {
+	function handleConnect(event) {
 		event.preventDefault();
 		store.connect();
+	}
+
+	function handlePublishMessage(event) {
+		event.preventDefault();
+		store.publishMessage();
 	}
 </script>
 
@@ -19,7 +22,7 @@
 
 	<div class="row g-3 my-3">
 		<div class="col-12 col-md-6">
-			<form class="input-group" onsubmit={handleSubmit}>
+			<form class="input-group" onsubmit={handleConnect}>
 				<input
 					type="password"
 					name="token"
@@ -27,7 +30,7 @@
 					placeholder="type auth token"
 					bind:value={store.token}
 				/>
-				<button class="btn btn-outline-secondary" type="submit" disabled={!canConnect}
+				<button class="btn btn-outline-secondary" type="submit" disabled={!store.canConnect}
 					>Connect</button
 				>
 			</form>
@@ -45,6 +48,25 @@
 				/>
 			</div>
 		</div>
+
+		{#if store.isConnected}
+			<div class="col-12">
+				<form class="input-group" onsubmit={handlePublishMessage}>
+					<input
+						type="text"
+						name="message"
+						class="form-control"
+						placeholder="type message"
+						bind:value={store.message}
+					/>
+					<button
+						class="btn btn-outline-secondary"
+						type="submit"
+						disabled={!store.canPublishMessage}>Send</button
+					>
+				</form>
+			</div>
+		{/if}
 	</div>
 
 	<div class="row g-3 my-3">
