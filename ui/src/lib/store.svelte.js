@@ -28,6 +28,7 @@ class AppStore {
 	canPublishMessage = $derived(this.isConnected && !!this.user?.trim() && !!this.message?.trim());
 
 	#nc;
+	#kv;
 
 	async connect() {
 		if (
@@ -72,6 +73,7 @@ class AppStore {
 			await this.#nc?.drain();
 		} catch {}
 		this.#nc = null;
+		this.#kv = null;
 		this.connectionStatus = STATUS_DISCONNECTED;
 	}
 
@@ -82,13 +84,21 @@ class AppStore {
 			this.isPublishing = true;
 			this.error = null;
 
-			await this.#nc.publish(
-				'demo.messages',
-				JSON.stringify({
-					user: this.user?.trim(),
-					text: this.message?.trim()
-				})
-			);
+			if (this.message === '/theme dark') {
+				await this.#kv.put('theme', 'dark');
+			} else if (this.message === '/theme light') {
+				await this.#kv.put('theme', 'light');
+			} else if (this.message?.startsWith('/title ')) {
+				await this.#kv.put('title', this.message.slice(7));
+			} else {
+				await this.#nc.publish(
+					'demo.messages',
+					JSON.stringify({
+						user: this.user?.trim(),
+						text: this.message?.trim()
+					})
+				);
+			}
 
 			this.message = null;
 		} catch (err) {
@@ -112,15 +122,16 @@ class AppStore {
 
 	async #configure() {
 		const kvm = new Kvm(this.#nc);
-		const kv = await kvm.create('demo');
 
-		const kvTitle = await kv.get('title');
+		this.#kv = await kvm.create('demo');
+
+		const kvTitle = await this.#kv.get('title');
 		this.#setTitle(kvTitle?.string());
 
-		const kvTheme = await kv.get('theme');
+		const kvTheme = await this.#kv.get('theme');
 		this.#setTheme(kvTheme?.string());
 
-		const watch = await kv.watch();
+		const watch = await this.#kv.watch();
 
 		(async () => {
 			for await (const msg of watch) {
@@ -173,15 +184,18 @@ class AppStore {
 
 	#parseMessage(msg) {
 		let message;
+		let text = '<empty>';
 
 		try {
 			message = msg.json();
-		} catch {}
+		} catch {
+			text = msg.string() || text;
+		}
 
 		message ??= {};
 		message.id = createMessageId();
 		message.user ||= '<unknown>';
-		message.text ||= msg.string() || '<empty>';
+		message.text ||= text;
 
 		return message;
 	}
