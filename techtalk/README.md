@@ -4,7 +4,7 @@
 - Designed for increasingly hyper-connected world
 - Can replace many commonly used technologies with a single solution, including:
   - Traditional messaging: RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, etc.
-  - Data streaming: Kafka, Azure Event Hubs, etc.
+  - Data streaming: Kafka, Azure Event Hubs, RabbitMQ Streams, etc.
   - MQTT 3.1.1 brokers (with Sparkplug B compatibility): HiveMQ MQTT Broker, etc.
   - WebSocket servers: Centrifugo, Azure Web PubSub, Azure SignalR Service, etc.
   - Key-Value stores: Redis, etc.
