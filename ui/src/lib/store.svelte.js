@@ -202,14 +202,21 @@ class AppStore {
 
 	#handleMonitorStatus(s) {
 		switch (s.type) {
-			case Events.Disconnect:
+			case 'disconnect':
 				this.connectionStatus = STATUS_DISCONNECTED;
-			case Events.Reconnect:
+				break;
+			case 'reconnecting':
+				this.connectionStatus = STATUS_CONNECTING;
+				break;
+			case 'reconnect':
 				this.connectionStatus = STATUS_CONNECTED;
-			case Events.LDM:
+				break;
+			case 'ldm':
 				this.connectionStatus = STATUS_LAME_DUCK_MODE;
-			case Events.Error:
+				break;
+			case 'error':
 				this.error = s.error?.name || STATUS_SERVER_ERROR;
+				break;
 		}
 	}
 

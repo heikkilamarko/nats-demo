@@ -16,14 +16,8 @@
 
 	header -Server
 
-	redir /nats /nats/
-
 	handle_path /ws {
 		reverse_proxy {$NATS_WS_ADDRESS}
-	}
-
-	handle_path /nats/* {
-		reverse_proxy {$NATS_HTTP_ADDRESS}
 	}
 
 	handle {

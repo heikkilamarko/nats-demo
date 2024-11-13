@@ -28,21 +28,9 @@ docker build --platform linux/amd64 -t <container_registry_name>.azurecr.io/nats
 docker push <container_registry_name>.azurecr.io/nats:v1
 ```
 
-## Build NATS Box Container Image
+## Connect to a Container in Azure Container App
 
-To build the NATS Box container image, navigate to the `nats-box` directory and execute the following commands:
-
-```bash
-cd nats-box
-
-docker build --platform linux/amd64 -t <container_registry_name>.azurecr.io/nats-box:v1 .
-
-docker push <container_registry_name>.azurecr.io/nats-box:v1
-```
-
-## Connect to NATS Box Container in Azure Container App
-
-To connect to the NATS Box container in your Azure Container App, run the following command:
+To connect to a container in your Azure Container App, run the following command:
 
 ```bash
 az containerapp exec --resource-group <resource_group_name> --name <container_app_name> --container <container_name> --command "/bin/sh"
