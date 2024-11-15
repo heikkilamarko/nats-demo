@@ -1,58 +1,88 @@
 # NATS
 
+## Overview
+
 - Messaging System / Connective Technology
-- Designed for increasingly hyper-connected world
-- Can replace many commonly used technologies with a single solution, including:
-  - Traditional messaging: RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, etc.
-  - Data streaming: Kafka, Azure Event Hubs, RabbitMQ Streams, etc.
-  - MQTT 3.1.1 brokers (with Sparkplug B compatibility): HiveMQ MQTT Broker, etc.
-  - WebSocket servers: Centrifugo, Azure Web PubSub, Azure SignalR Service, etc.
-  - Key-Value stores: Redis, etc.
-  - Object stores: MinIO, S3, Azure Blob Storage, Google Cloud Storage, etc.
+
 - Open source, Apache License 2.0
+
 - Cloud Native Computing Foundation (CNCF) incubating project
-- Known for its robustness
-- Widely adopted
-  - Used globally by thousands of companies
-  - Use cases: microservices, stream processing, edge computing, web, mobile, IoT, etc.
-  - 200M+ downloads
-  - 1000+ contributors
-  - SDKs available for all major programming languages (Go, Rust, C, .NET, Java, JavaScript, Python, etc.)
+
 - Developed by Synadia
-  - Synadia offers a NATS-as-a-Service solution
-    - Synadia Cloud: A global, multi-cloud NATS platform with an admin portal and API, fully managed by Synadia.
-    - Synadia Platform: NATS packaged with enterprise-grade features, available as a fully managed service by Synadia or for self-hosting.
-- Simple
-  - All features in a ~15MB single binary executable
+
+  - Synadia also offers NATS-as-a-Service solutions, including Synadia Cloud and Synadia Platform.
+
+- Can replace many commonly used technologies with a single solution:
+
+  | Category              | Technologies                                        |
+  | --------------------- | --------------------------------------------------- |
+  | Traditional messaging | RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub   |
+  | Data streaming        | Kafka, Azure Event Hubs, RabbitMQ Streams           |
+  | WebSocket servers     | Centrifugo, Azure Web PubSub, Azure SignalR Service |
+  | MQTT 3.1.1 brokers    | HiveMQ MQTT Broker                                  |
+  | Key-Value stores      | Redis, Valkey                                       |
+  | Object stores         | MinIO, S3, Azure Blob Storage, Google Cloud Storage |
+
+- Lightweight
+
+  - All features in a ~15MB single binary
   - No runtime dependencies
+
 - Runs everywhere (on-prem, edge, cloud, containers, mobile, devices, etc.)
-- Scales from a single NATS server to multi-cloud superclusters (cluster of clusters) and leaf nodes
+
 - High performance
+
 - Secure
+
 - Multi-tenant
 
-## Features
+- Scales from a single NATS server to multi-cloud superclusters and leaf nodes
+
+- Widely adopted
+
+  - Known for its robustness, simplicity, and ease of use
+  - Used globally by thousands of companies
+  - Use cases: microservices, stream processing, edge computing, web, mobile, IoT, etc.
+  - 1000+ GitHub contributors
+  - 9000+ Slack members
+  - 300M+ Docker pulls
+  - Official SDKs available for all major programming languages (Go, Rust, C, .NET, Java, JavaScript, Python, etc.)
+
+## Technology
 
 - Subject-based addressing
+
 - Location-transparent
+
 - Geo-aware
+
 - Payload-agnostic
+
 - Message headers
+
 - Core NATS
+
   - Publish-Subscribe
   - Request-Reply
   - Queue Groups
+
 - JetStream (the persistence layer on top of Core NATS)
+
   - Streams
   - Work Queues
   - Key-Value Store
   - Object Store
+
 - Supported protocols
+
   - TCP (Standard NATS)
   - MQTT 3.1.1 with Sparkplug B compatibility
   - WebSocket
+
 - Multi-Tenant (Accounts)
+
 - Security
+
   - TLS
   - Token authentication
   - Username/Password (plain text or bcrypt-hashed passwords)
@@ -60,12 +90,15 @@
   - Decentralized JWT authentication/authorization
     - Zero-trust security
     - Roles: Operator, Account, User
-  - Auth Callout (use any IAM solution, e.g., OAuth, LDAP, SAML, Microsoft Entra, Keycloak, ZITADEL, etc.)
+  - Auth Callout (use any IAM solution, e.g., OAuth, LDAP, Microsoft Entra ID, Keycloak, ZITADEL, etc.)
+
 - Server topologies
+
   - Single NATS server
   - Clustering
   - Superclusters (cluster of clusters) with gateway connections
   - Leaf Nodes (useful in IoT and edge scenarios)
+
 - Monitoring
   - NATS Server provides a lightweight HTTP server on a dedicated monitoring port
   - Prometheus NATS Exporter
