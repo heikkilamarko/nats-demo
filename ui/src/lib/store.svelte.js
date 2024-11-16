@@ -1,4 +1,4 @@
-import { wsconnect, Events } from '@nats-io/nats-core';
+import { wsconnect } from '@nats-io/nats-core';
 import { Kvm } from '@nats-io/kv';
 import { createMessageId, getWsUrl, getSessionToken, setSessionToken } from './utils.js';
 

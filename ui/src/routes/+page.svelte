@@ -35,7 +35,6 @@
 					class="form-control"
 					placeholder="Type your auth token"
 					autocomplete="off"
-					required
 					maxlength="50"
 					bind:value={store.token}
 				/>

@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 export function getWsUrl(url) {
 	return url?.startsWith('ws')
 		? url
@@ -14,6 +12,7 @@ export function getSessionToken() {
 	return localStorage.getItem('token');
 }
 
+let messageId = 1;
 export function createMessageId() {
-	return uuidv4();
+	return messageId++;
 }
