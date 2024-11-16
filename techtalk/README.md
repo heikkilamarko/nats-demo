@@ -76,12 +76,26 @@
   - At-least-once and exactly-once delivery
   - Streams
   - Consumers
+    - Durable (persisted server-side, identified by name, shareable across clients for load balancing)
+    - Ephemeral (not persisted, created at subscription time, deleted when the subscription is closed)
+  - Advisories can be used to implement functionalities such as dead-letter queues (DLQ).
 
-- Key-Value Store & Object Store
+- Key-Value Store
 
   - Built on top of JetStream
   - Buckets
   - Keys
+  - Allows configuring the number of historical values to retain per key.
+  - Supports watching a bucket or key to receive real-time change notifications.
+  - Provides atomic create and update operations for implementing features like distributed locking and concurrency control.
+
+- Object Store
+
+  - Built on top of JetStream
+  - Buckets
+  - Keys
+  - Allows storing and retrieving files of any size by associating them with a path or file name as the key.
+  - Supports watching a bucket to receive real-time change notifications.
 
 - Supported protocols
 
@@ -113,8 +127,10 @@
   - Leaf Nodes (useful in IoT and edge scenarios)
 
 - Monitoring
-  - NATS Server provides a lightweight HTTP server on a dedicated monitoring port
+
+  - NATS Server provides an HTTP monitoring endpoint.
   - Prometheus NATS Exporter
+  - NATS Surveyor
 
 ## NATS CLI
 
