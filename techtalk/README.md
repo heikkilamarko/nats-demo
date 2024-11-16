@@ -14,14 +14,14 @@
 
 - Can replace many commonly used technologies with a single solution:
 
-  | Category              | Technologies                                        |
-  | --------------------- | --------------------------------------------------- |
-  | Traditional messaging | RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub   |
-  | Data streaming        | Kafka, Azure Event Hubs, RabbitMQ Streams           |
-  | WebSocket servers     | Centrifugo, Azure Web PubSub, Azure SignalR Service |
-  | MQTT 3.1.1 brokers    | HiveMQ MQTT Broker                                  |
-  | Key-Value stores      | Redis, Valkey                                       |
-  | Object stores         | MinIO, S3, Azure Blob Storage, Google Cloud Storage |
+  | Category              | Technologies                                                     |
+  | --------------------- | ---------------------------------------------------------------- |
+  | Traditional messaging | RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, AWS SNS & SQS |
+  | Data streaming        | Kafka, Azure Event Hubs, RabbitMQ Streams                        |
+  | WebSocket servers     | Centrifugo, Azure Web PubSub, Azure SignalR Service              |
+  | MQTT 3.1.1 brokers    | HiveMQ MQTT Broker                                               |
+  | Key-Value stores      | Redis, Valkey                                                    |
+  | Object stores         | MinIO, S3, Azure Blob Storage, Google Cloud Storage              |
 
 - Lightweight
 
@@ -62,16 +62,26 @@
 
 - Core NATS
 
+  - At-most-once delivery
+  - No persistence
   - Publish-Subscribe
   - Request-Reply
   - Queue Groups
 
-- JetStream (the persistence layer on top of Core NATS)
+- JetStream
 
+  - Persistence layer on top of Core NATS
+    - File storage
+    - Memory storage
+  - At-least-once and exactly-once delivery
   - Streams
-  - Work Queues
-  - Key-Value Store
-  - Object Store
+  - Consumers
+
+- Key-Value Store & Object Store
+
+  - Built on top of JetStream
+  - Buckets
+  - Keys
 
 - Supported protocols
 
@@ -79,7 +89,10 @@
   - MQTT 3.1.1 with Sparkplug B compatibility
   - WebSocket
 
-- Multi-Tenant (Accounts)
+- Multi-tenancy using Accounts
+
+  - Accounts are secure, isolated messaging contexts that enable multi-tenancy in NATS.
+  - Messaging between accounts is enabled by exporting and importing subject spaces.
 
 - Security
 
@@ -105,25 +118,27 @@
 
 ## NATS CLI
 
+https://docs.nats.io/using-nats/nats-tools/nats_cli
+
 The best way to begin learning NATS is by using the NATS CLI.
 
-## NATS Server
+## Demo
 
-![NATS Server](nats_server.svg)
+![Demo](demo.svg)
+
+### NATS Server
 
 ```bash
 nats-server -c demo.conf
 ```
 
-## Subject-Based Messaging
+### Subject-Based Messaging & Core NATS
 
 https://docs.nats.io/nats-concepts/subjects
 
-## Core NATS
-
 https://docs.nats.io/nats-concepts/core-nats
 
-### Publish-Subscribe
+#### Publish-Subscribe
 
 ```bash
 nats sub demo.messages
@@ -153,7 +168,7 @@ nats sub "demo.>"
 nats sub ">"
 ```
 
-### Queue Groups
+#### Queue Groups
 
 ```bash
 nats sub "demo.>" --queue demo
@@ -163,7 +178,7 @@ nats sub "demo.>" --queue demo
 nats pub demo.messages "hello world"
 ```
 
-### Request-Reply
+#### Request-Reply
 
 ```bash
 nats reply demo.service "instance 1: pong"
@@ -189,11 +204,11 @@ nats request demo.weather.helsinki "" --raw
 nats request demo.weather.london "" --raw
 ```
 
-## JetStream
+### JetStream
 
 https://docs.nats.io/nats-concepts/jetstream
 
-### Streams
+#### Streams
 
 ```bash
 nats stream add messages
@@ -229,7 +244,7 @@ nats pub jobs.demo "demo job {{.Count}}" --count 100
 watch nats stream ls
 ```
 
-### Consumers
+#### Consumers
 
 ```bash
 nats consumer add messages messages
@@ -251,7 +266,7 @@ nats consumer next messages messages --count 10
 nats consumer next jobs jobs --count 10
 ```
 
-## Key-Value Store
+### Key-Value Store
 
 https://docs.nats.io/nats-concepts/jetstream/key-value-store
 
@@ -287,7 +302,7 @@ nats kv put demo log_level "WARN"
 nats kv rm demo theme
 ```
 
-## Object Store
+### Object Store
 
 https://docs.nats.io/nats-concepts/jetstream/obj_store
 
