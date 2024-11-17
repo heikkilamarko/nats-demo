@@ -14,14 +14,16 @@
 
 - Can replace many commonly used technologies with a single solution:
 
-  | Category              | Technologies                                                     |
-  | --------------------- | ---------------------------------------------------------------- |
-  | Traditional messaging | RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, AWS SNS & SQS |
-  | Data streaming        | Kafka, Azure Event Hubs, RabbitMQ Streams                        |
-  | WebSocket servers     | Centrifugo, Azure Web PubSub, Azure SignalR Service              |
-  | MQTT 3.1.1 brokers    | HiveMQ MQTT Broker                                               |
-  | Key-Value stores      | Redis, Valkey                                                    |
-  | Object stores         | MinIO, S3, Azure Blob Storage, Google Cloud Storage              |
+  | Category                            | Technologies                                                     |
+  | ----------------------------------- | ---------------------------------------------------------------- |
+  | Traditional messaging               | RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, AWS SNS & SQS |
+  | Data streaming                      | Kafka, Azure Event Hubs, RabbitMQ Streams                        |
+  | WebSocket servers                   | Centrifugo, Azure Web PubSub, Azure SignalR Service              |
+  | MQTT 3.1.1 brokers                  | HiveMQ MQTT Broker                                               |
+  | Key-Value stores                    | Redis, Memcached                                                 |
+  | Object stores                       | MinIO, S3, Azure Blob Storage, Google Cloud Storage              |
+  | App configuration & feature toggles | Consul, LaunchDarkly, Azure App Configuration                    |
+  | Service mesh                        | Envoy, Istio                                                     |
 
 - Lightweight
 

@@ -16,12 +16,12 @@
 		"prettier": "3.3.3",
 		"prettier-plugin-svelte": "3.2.8",
 		"sass": "1.81.0",
-		"svelte": "5.2.1",
+		"svelte": "5.2.2",
 		"vite": "5.4.11"
 	},
 	"dependencies": {
-		"@nats-io/kv": "3.0.0-21",
-		"@nats-io/nats-core": "3.0.0-40",
+		"@nats-io/kv": "3.0.0-22",
+		"@nats-io/nats-core": "3.0.0-41",
 		"bootstrap": "5.3.3"
 	}
 }
