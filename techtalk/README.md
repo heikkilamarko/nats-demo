@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Messaging System / Connective Technology
+- Messaging system and connective technology
 
 - Open source, Apache License 2.0
 
@@ -10,20 +10,22 @@
 
 - Developed by Synadia
 
-  - Synadia also offers NATS-as-a-Service solutions, including Synadia Cloud and Synadia Platform.
+  - Synadia also offers NATS-as-a-Service solutions, including **Synadia Cloud** and **Synadia Platform**.
 
-- Can replace many commonly used technologies with a single solution:
+- Known for its robustness, simplicity, and ease of use
+
+- Versatile: can replace many commonly used technologies with a single solution.
 
   | Category                            | Technologies                                                     |
   | ----------------------------------- | ---------------------------------------------------------------- |
-  | Traditional messaging               | RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, AWS SNS & SQS |
-  | Data streaming                      | Kafka, Azure Event Hubs, RabbitMQ Streams                        |
-  | WebSocket servers                   | Centrifugo, Azure Web PubSub, Azure SignalR Service              |
-  | MQTT 3.1.1 brokers                  | HiveMQ MQTT Broker                                               |
-  | Key-Value stores                    | Redis, Memcached                                                 |
-  | Object stores                       | MinIO, S3, Azure Blob Storage, Google Cloud Storage              |
-  | App configuration & feature toggles | Consul, LaunchDarkly, Azure App Configuration                    |
-  | Service mesh                        | Envoy, Istio                                                     |
+  | Traditional Messaging               | RabbitMQ, Azure Service Bus, Google Cloud Pub/Sub, AWS SNS & SQS |
+  | Data Streaming                      | Kafka, Azure Event Hubs, RabbitMQ Streams                        |
+  | WebSocket Servers                   | Centrifugo, Azure Web PubSub, Azure SignalR Service              |
+  | MQTT 3.1.1 Brokers                  | HiveMQ MQTT Broker                                               |
+  | Key-Value Stores                    | Redis, Memcached                                                 |
+  | Object Stores                       | MinIO, S3, Azure Blob Storage, Google Cloud Storage              |
+  | App Configuration & Feature Toggles | Consul, LaunchDarkly, Azure App Configuration                    |
+  | Service Mesh                        | Envoy, Istio                                                     |
 
 - Lightweight
 
@@ -36,19 +38,19 @@
 
 - Secure
 
-- Multi-tenant
+- Truly Multi-tenant
 
 - Scales from a single NATS server to multi-cloud superclusters and leaf nodes
 
+- Official SDKs available for all major programming languages (Go, Rust, C, .NET, Java, JavaScript, Python, etc.)
+
 - Widely adopted
 
-  - Known for its robustness, simplicity, and ease of use
   - Used globally by thousands of companies
   - Use cases: microservices, stream processing, edge computing, web, mobile, IoT, etc.
   - 1000+ GitHub contributors
   - 9000+ Slack members
   - 300M+ Docker pulls
-  - Official SDKs available for all major programming languages (Go, Rust, C, .NET, Java, JavaScript, Python, etc.)
 
 ## Technology
 
@@ -61,6 +63,12 @@
 - Payload-agnostic
 
 - Message headers
+
+- Supported protocols
+
+  - TCP (Standard NATS)
+  - WebSocket
+  - MQTT 3.1.1 with Sparkplug B compatibility
 
 - Core NATS
 
@@ -81,6 +89,9 @@
     - Durable (persisted server-side, identified by name, shareable across clients for load balancing)
     - Ephemeral (not persisted, created at subscription time, deleted when the subscription is closed)
   - Advisories can be used to implement functionalities such as dead-letter queues (DLQ).
+  - Disaster recovery
+    - Automatic (from intact quorum nodes)
+    - Manual (backup & restore)
 
 - Key-Value Store
 
@@ -99,11 +110,12 @@
   - Allows storing and retrieving files of any size by associating them with a path or file name as the key.
   - Supports watching a bucket to receive real-time change notifications.
 
-- Supported protocols
+- Server topologies
 
-  - TCP (Standard NATS)
-  - MQTT 3.1.1 with Sparkplug B compatibility
-  - WebSocket
+  - Single NATS server
+  - Clustering
+  - Superclusters (cluster of clusters) with gateway connections
+  - Leaf Nodes (useful in IoT and edge scenarios)
 
 - Multi-tenancy using Accounts
 
@@ -120,13 +132,7 @@
     - Zero-trust security
     - Roles: Operator, Account, User
   - Auth Callout (use any IAM solution, e.g., OAuth, LDAP, Microsoft Entra ID, Keycloak, ZITADEL, etc.)
-
-- Server topologies
-
-  - Single NATS server
-  - Clustering
-  - Superclusters (cluster of clusters) with gateway connections
-  - Leaf Nodes (useful in IoT and edge scenarios)
+  - Encryption at rest
 
 - Monitoring
 
@@ -139,211 +145,3 @@
 https://docs.nats.io/using-nats/nats-tools/nats_cli
 
 The best way to begin learning NATS is by using the NATS CLI.
-
-## Demo
-
-![Demo](demo.svg)
-
-### NATS Server
-
-```bash
-nats-server -c demo.conf
-```
-
-### Subject-Based Messaging & Core NATS
-
-https://docs.nats.io/nats-concepts/subjects
-
-https://docs.nats.io/nats-concepts/core-nats
-
-#### Publish-Subscribe
-
-```bash
-nats sub demo.messages
-```
-
-```bash
-nats pub demo.messages "hello world"
-```
-
-```bash
-nats sub "demo.*.messages"
-```
-
-```bash
-nats pub demo.en.messages "hello world"
-```
-
-```bash
-nats pub demo.fi.messages "hei maailma"
-```
-
-```bash
-nats sub "demo.>"
-```
-
-```bash
-nats sub ">"
-```
-
-#### Queue Groups
-
-```bash
-nats sub "demo.>" --queue demo
-```
-
-```bash
-nats pub demo.messages "hello world"
-```
-
-#### Request-Reply
-
-```bash
-nats reply demo.service "instance 1: pong"
-```
-
-```bash
-nats reply demo.service "instance 2: pong"
-```
-
-```bash
-nats request demo.service "ping"
-```
-
-```bash
-nats reply "demo.weather.*" --command "curl -s wttr.in/{{2}}?0q"
-```
-
-```bash
-nats request demo.weather.helsinki "" --raw
-```
-
-```bash
-nats request demo.weather.london "" --raw
-```
-
-### JetStream
-
-https://docs.nats.io/nats-concepts/jetstream
-
-#### Streams
-
-```bash
-nats stream add messages
-```
-
-| Configuration    | Value        |
-| ---------------- | ------------ |
-| Subjects         | `messages.>` |
-| Retention Policy | `Limits`     |
-
-```bash
-nats stream add jobs
-```
-
-| Configuration    | Value        |
-| ---------------- | ------------ |
-| Subjects         | `jobs.>`     |
-| Retention Policy | `Work Queue` |
-
-```bash
-nats stream ls
-```
-
-```bash
-nats pub messages.demo "demo message {{.Count}}" --count 1000
-```
-
-```bash
-nats pub jobs.demo "demo job {{.Count}}" --count 100
-```
-
-```bash
-watch nats stream ls
-```
-
-#### Consumers
-
-```bash
-nats consumer add messages messages
-```
-
-```bash
-nats consumer add jobs jobs
-```
-
-```bash
-nats consumer report
-```
-
-```bash
-nats consumer next messages messages --count 10
-```
-
-```bash
-nats consumer next jobs jobs --count 10
-```
-
-### Key-Value Store
-
-https://docs.nats.io/nats-concepts/jetstream/key-value-store
-
-```bash
-nats kv add demo
-```
-
-```bash
-nats kv put demo log_level "INFO"
-```
-
-```bash
-nats kv put demo theme "dark"
-```
-
-```bash
-nats kv ls
-```
-
-```bash
-nats kv ls demo --verbose --display-value
-```
-
-```bash
-nats kv watch demo
-```
-
-```bash
-nats kv put demo log_level "WARN"
-```
-
-```bash
-nats kv rm demo theme
-```
-
-### Object Store
-
-https://docs.nats.io/nats-concepts/jetstream/obj_store
-
-```bash
-nats object add demo
-```
-
-```bash
-echo "Lorem ipsum dolor sit amet" > lorem_ipsum.txt
-```
-
-```bash
-nats object put demo lorem_ipsum.txt
-```
-
-```bash
-nats object ls
-```
-
-```bash
-nats object ls demo
-```
-
-```bash
-nats object get demo lorem_ipsum.txt
-```

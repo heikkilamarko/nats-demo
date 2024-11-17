@@ -8,9 +8,6 @@ export default defineConfig({
 		proxy: {
 			'/ws': {
 				target: 'ws://localhost:8080'
-			},
-			'/nats': {
-				target: 'http://localhost:8080'
 			}
 		}
 	},
