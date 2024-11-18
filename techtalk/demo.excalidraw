@@ -4006,13 +4006,13 @@
       "updated": 1730875312517,
       "link": null,
       "locked": false,
-      "text": "~15MB single binary",
+      "text": "18MB single binary",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "~15MB single binary",
+      "originalText": "18MB single binary",
       "autoResize": true,
       "lineHeight": 1.25
     }

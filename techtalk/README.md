@@ -29,7 +29,7 @@
 
 - Lightweight
 
-  - All features in a ~15MB single binary
+  - All features in a 18MB single binary
   - No runtime dependencies
 
 - Runs everywhere (on-prem, edge, cloud, containers, mobile, devices, etc.)
