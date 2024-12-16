@@ -11,17 +11,17 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "3.0.6",
-		"@sveltejs/kit": "2.9.0",
-		"@sveltejs/vite-plugin-svelte": "5.0.1",
+		"@sveltejs/kit": "2.11.1",
+		"@sveltejs/vite-plugin-svelte": "5.0.2",
 		"prettier": "3.4.2",
 		"prettier-plugin-svelte": "3.3.2",
-		"sass": "1.82.0",
-		"svelte": "5.8.1",
+		"sass": "1.83.0",
+		"svelte": "5.14.0",
 		"vite": "6.0.3"
 	},
 	"dependencies": {
-		"@nats-io/kv": "3.0.0-28",
-		"@nats-io/nats-core": "3.0.0-47",
+		"@nats-io/kv": "3.0.0-29",
+		"@nats-io/nats-core": "3.0.0-48",
 		"bootstrap": "5.3.3"
 	}
 }
